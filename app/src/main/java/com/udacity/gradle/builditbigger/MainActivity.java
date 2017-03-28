@@ -1,18 +1,21 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.JokeGenerator;
 import com.example.android.displaylib.DetailActivity;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "Manfred"));
-        startActivity(DetailActivity.newIntent(this, new JokeGenerator().getJoke()));
+        String result = executeEndpointsTask();
+        startActivity(DetailActivity.newIntent(this, result));
+    }
+
+    private String executeEndpointsTask() {
+        AsyncTask<Void, Void, String> asyncTask = new EndpointsAsyncTask().execute();
+        String result;
+        try {
+            result = asyncTask.get();
+        } catch (InterruptedException e) {
+            result = "InterruptedException";
+            Log.d(TAG, result, e);
+        } catch (ExecutionException e) {
+            result = "ExecutionException";
+            Log.d(TAG, result, e);
+        }
+        return result;
     }
 
 

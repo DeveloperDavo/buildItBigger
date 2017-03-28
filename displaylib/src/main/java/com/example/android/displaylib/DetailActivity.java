@@ -16,12 +16,12 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         TextView tvJoke = (TextView) findViewById(R.id.tv_joke);
         tvJoke.setText(getIntent().getStringExtra(JOKE));
-
     }
 
-    public static Intent newIntent(Context context, String joke) {
+    public static Intent newIntent(Context context, String result) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(JOKE, joke);
+        intent.putExtra(JOKE, result);
         return intent;
     }
+
 }
