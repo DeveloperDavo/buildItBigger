@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(DetailActivity.newIntent(this, result));
     }
 
-    private String executeEndpointsTask() {
+    String executeEndpointsTask() {
         AsyncTask<Void, Void, String> asyncTask = new EndpointsAsyncTask().execute();
         String result;
         try {
